@@ -24,6 +24,16 @@ Every displayed detail is optional and disabled by default:
 With all optional details disabled, Discord shows `Playing HorizonXI` and
 `Adventuring`.
 
+## Preview
+
+Compact control window:
+
+![HXIPresence compact control window](docs/images/hxipresence-control.png)
+
+Settings and activity preview:
+
+![HXIPresence settings window](docs/images/hxipresence-settings.png)
+
 ## Requirements
 
 - Ashita v4
