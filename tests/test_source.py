@@ -8,6 +8,7 @@ MAIN_SOURCE = (ADDON_DIR / "HXIPresence.lua").read_text(encoding="utf-8")
 IPC_SOURCE = (ADDON_DIR / "discord_ipc.lua").read_text(encoding="utf-8")
 BUILDER_SOURCE = (ADDON_DIR / "presence_builder.lua").read_text(encoding="utf-8")
 README = (ADDON_DIR / "README.md").read_text(encoding="utf-8")
+LICENSE = (ADDON_DIR / "LICENSE").read_text(encoding="utf-8")
 
 
 class HXIPresenceSourceTests(unittest.TestCase):
@@ -159,6 +160,17 @@ class HXIPresenceSourceTests(unittest.TestCase):
         self.assertIn("Created by **DragoHorse**", README)
         self.assertIn("HXIPresence-v0.4.1.zip", README)
 
+    def test_readme_requires_no_user_discord_application_setup(self):
+        self.assertIn("No Discord Developer Portal setup is required", README)
+        self.assertIn("Application ID and artwork are already configured", README)
+        self.assertNotIn("Create an application in the Discord Developer Portal", README)
+
+    def test_mit_license_is_present(self):
+        self.assertIn("MIT License", LICENSE)
+        self.assertIn("Copyright (c) 2026 DragoHorse", LICENSE)
+        self.assertIn("THE SOFTWARE IS PROVIDED \"AS IS\"", LICENSE)
+        self.assertIn("[MIT License](LICENSE)", README)
+
     def test_readme_has_no_developer_machine_path(self):
         self.assertNotIn("C:\\Games\\", README)
         self.assertNotIn("C:\\Users\\", README)
@@ -189,12 +201,9 @@ class HXIPresenceSourceTests(unittest.TestCase):
         self.assertRegex(MAIN_SOURCE, r"(?s)local function set_presence_enabled.*?clear_and_disconnect\(\)")
 
     def test_readme_keeps_approval_and_deployment_separate(self):
-        self.assertIn("must not be installed or loaded", README)
-        self.assertIn("Source review and offline testing are separate", README)
-        self.assertIn("tested manually on a private/local server", README)
-        self.assertIn("were not\nconfigured to autoload", README)
-        self.assertIn("were confirmed working", README)
-        self.assertIn("version 0.3.1 simplified settings window", README)
+        self.assertIn("Only use HXIPresence on HorizonXI after it is approved", README)
+        self.assertIn("approved addons page", README)
+        self.assertIn("/addon load HXIPresence", README)
 
 
 if __name__ == "__main__":
