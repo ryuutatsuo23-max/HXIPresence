@@ -109,7 +109,14 @@ class HXIPresenceSourceTests(unittest.TestCase):
         self.assertIn("get_last_activity_ack_nonce", IPC_SOURCE)
         self.assertIn("get_last_activity_error", IPC_SOURCE)
         self.assertIn("runtime.pending_publish_nonce", MAIN_SOURCE)
-        self.assertIn("Discord acknowledged the active presence.", MAIN_SOURCE)
+        self.assertIn(
+            "settings_ui.feedback = 'Discord acknowledged the active presence.'",
+            MAIN_SOURCE,
+        )
+        self.assertNotIn(
+            "notify('Discord acknowledged the active presence.')",
+            MAIN_SOURCE,
+        )
         self.assertIn("acknowledgement_timeout_seconds = 10", MAIN_SOURCE)
         self.assertIn("Discord acknowledgement timed out; reconnecting.", MAIN_SOURCE)
 
@@ -158,7 +165,7 @@ class HXIPresenceSourceTests(unittest.TestCase):
     def test_public_metadata_credits_dragohorse(self):
         self.assertIn("addon.author = 'DragoHorse'", MAIN_SOURCE)
         self.assertIn("Created by **DragoHorse**", README)
-        self.assertIn("HXIPresence-v0.4.1.zip", README)
+        self.assertIn("HXIPresence-v0.4.2.zip", README)
 
     def test_readme_requires_no_user_discord_application_setup(self):
         self.assertIn("No Discord Developer Portal setup is required", README)
@@ -200,9 +207,11 @@ class HXIPresenceSourceTests(unittest.TestCase):
         self.assertIn("HXIPresence_Unload", MAIN_SOURCE)
         self.assertRegex(MAIN_SOURCE, r"(?s)local function set_presence_enabled.*?clear_and_disconnect\(\)")
 
-    def test_readme_keeps_approval_and_deployment_separate(self):
-        self.assertIn("Only use HXIPresence on HorizonXI after it is approved", README)
-        self.assertIn("approved addons page", README)
+    def test_readme_and_ui_record_current_approval(self):
+        self.assertIn("approved by HorizonXI staff on September 4", README)
+        self.assertIn("Approved by HorizonXI staff on September 4, 2026.", MAIN_SOURCE)
+        self.assertNotIn("do not load this addon on HorizonXI until it is approved", MAIN_SOURCE)
+        self.assertNotIn("Only use HXIPresence on HorizonXI after it is approved", README)
         self.assertIn("/addon load HXIPresence", README)
 
 

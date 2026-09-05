@@ -5,9 +5,8 @@ Discord Rich Presence.
 
 Created by **DragoHorse**.
 
-> **Approval notice:** Only use HXIPresence on HorizonXI after it is approved
-> by the HorizonXI team. Check the
-> [approved addons page](https://horizonxi.com/addons) before loading it.
+> **Approved:** HXIPresence was approved by HorizonXI staff on September 4,
+> 2026.
 
 ## Features
 
@@ -34,6 +33,9 @@ Settings and activity preview:
 
 ![HXIPresence settings window](docs/images/hxipresence-settings.png)
 
+This settings screenshot was captured during pre-approval testing. Version
+0.4.2 shows the current approval status.
+
 ## Requirements
 
 - Ashita v4
@@ -45,7 +47,7 @@ need to create an application, bot, token, or webhook.
 
 ## Installation
 
-1. Download `HXIPresence-v0.4.1.zip` from the
+1. Download `HXIPresence-v0.4.2.zip` from the
    [latest release](https://github.com/ryuutatsuo23-max/HXIPresence/releases/latest).
 2. Extract the included `HXIPresence` folder into Ashita's `addons` folder.
 3. Confirm the resulting path is `addons\HXIPresence\HXIPresence.lua`.

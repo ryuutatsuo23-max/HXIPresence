@@ -2,7 +2,7 @@ local support_url = 'https://github.com/ryuutatsuo23-max/HXIPresence';
 
 addon.name = 'HXIPresence';
 addon.author = 'DragoHorse';
-addon.version = '0.4.1';
+addon.version = '0.4.2';
 addon.desc = 'Privacy-controlled Discord Rich Presence for HorizonXI.';
 addon.link = support_url;
 
@@ -226,7 +226,6 @@ local function apply_ipc_result(now)
         runtime.published = true;
         runtime.last_notice = '';
         settings_ui.feedback = 'Discord acknowledged the active presence.';
-        notify('Discord acknowledged the active presence.');
         return;
     end
 
@@ -472,7 +471,7 @@ local function draw_settings_ui()
             imgui.TextDisabled('Repository and support link will be added before publication.');
         end
         imgui.TextDisabled(settings_ui.feedback);
-        imgui.TextWrapped('Approval reminder: do not load this addon on HorizonXI until it is approved.');
+        imgui.TextWrapped('Approved by HorizonXI staff on September 4, 2026.');
     end
     imgui.End();
 end
