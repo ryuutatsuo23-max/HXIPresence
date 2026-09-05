@@ -33,8 +33,9 @@ Settings and activity preview:
 
 ![HXIPresence settings window](docs/images/hxipresence-settings.png)
 
-This settings screenshot was captured during pre-approval testing. Version
-0.4.2 shows the current approval status.
+Discord activity:
+
+![HXIPresence Discord activity](docs/images/hxipresence-discord-activity.png)
 
 ## Requirements
 
@@ -47,7 +48,7 @@ need to create an application, bot, token, or webhook.
 
 ## Installation
 
-1. Download `HXIPresence-v0.4.2.zip` from the
+1. Download `HXIPresence-v0.4.3.zip` from the
    [latest release](https://github.com/ryuutatsuo23-max/HXIPresence/releases/latest).
 2. Extract the included `HXIPresence` folder into Ashita's `addons` folder.
 3. Confirm the resulting path is `addons\HXIPresence\HXIPresence.lua`.

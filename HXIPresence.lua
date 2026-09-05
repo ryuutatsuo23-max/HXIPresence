@@ -2,7 +2,7 @@ local support_url = 'https://github.com/ryuutatsuo23-max/HXIPresence';
 
 addon.name = 'HXIPresence';
 addon.author = 'DragoHorse';
-addon.version = '0.4.2';
+addon.version = '0.4.3';
 addon.desc = 'Privacy-controlled Discord Rich Presence for HorizonXI.';
 addon.link = support_url;
 
@@ -114,10 +114,11 @@ local function read_player_snapshot()
     local player = memory:GetPlayer();
     local party = memory:GetParty();
     local entity = memory:GetEntity();
-    if player == nil or party == nil or entity == nil or player:GetLoginStatus() ~= 2
+    local login_status = player ~= nil and (tonumber(player:GetLoginStatus()) or 0) or 0;
+    if player == nil or party == nil or entity == nil or login_status ~= 2
         or party:GetMemberIsActive(0) == 0
         or party:GetMemberServerId(0) == 0 then
-        return nil;
+        return nil, login_status;
     end
 
     local main_job_id = tonumber(party:GetMemberMainJob(0)) or 0;
@@ -152,7 +153,7 @@ local function read_player_snapshot()
         zone = resource_string('zones.names', zone_id),
         looking_for_party = bit.band(render_flags_1, looking_for_party_flag_mask) ~= 0,
         party_size = party_size,
-    };
+    }, login_status;
 end
 
 local function clear_and_disconnect()
@@ -192,25 +193,36 @@ local function ensure_connected(now)
     return false;
 end
 
-local function update_login_state(snapshot)
+local function update_login_state(snapshot, login_status)
     local logged_in = snapshot ~= nil;
-    if logged_in and not runtime.was_logged_in then
-        runtime.session_started_at = os.time();
-        mark_for_refresh();
-    elseif not logged_in and runtime.was_logged_in then
-        runtime.session_started_at = nil;
-        if discord_ipc.is_connected()
-            and (runtime.published or runtime.pending_publish_nonce ~= nil) then
-            discord_ipc.clear_activity();
+    if logged_in then
+        if not runtime.was_logged_in then
+            if runtime.session_started_at == nil then
+                runtime.session_started_at = os.time();
+            end
+            mark_for_refresh();
         end
-        runtime.published = false;
-        runtime.last_signature = nil;
-        runtime.pending_activity = nil;
-        runtime.pending_signature = nil;
-        runtime.pending_publish_nonce = nil;
-        runtime.pending_publish_sent_at = nil;
+        runtime.was_logged_in = true;
+        return;
     end
-    runtime.was_logged_in = logged_in;
+
+    -- Keep the last activity visible while Ashita temporarily reports zoning.
+    if login_status ~= 0 then
+        return;
+    end
+
+    runtime.session_started_at = nil;
+    if discord_ipc.is_connected()
+        and (runtime.published or runtime.pending_publish_nonce ~= nil) then
+        discord_ipc.clear_activity();
+    end
+    runtime.published = false;
+    runtime.last_signature = nil;
+    runtime.pending_activity = nil;
+    runtime.pending_signature = nil;
+    runtime.pending_publish_nonce = nil;
+    runtime.pending_publish_sent_at = nil;
+    runtime.was_logged_in = false;
 end
 
 local function apply_ipc_result(now)
@@ -291,8 +303,8 @@ local function update_presence(now)
         return;
     end
 
-    local snapshot = read_player_snapshot();
-    update_login_state(snapshot);
+    local snapshot, login_status = read_player_snapshot();
+    update_login_state(snapshot, login_status);
     if snapshot == nil then
         return;
     end

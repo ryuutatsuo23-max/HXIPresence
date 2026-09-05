@@ -165,7 +165,26 @@ class HXIPresenceSourceTests(unittest.TestCase):
     def test_public_metadata_credits_dragohorse(self):
         self.assertIn("addon.author = 'DragoHorse'", MAIN_SOURCE)
         self.assertIn("Created by **DragoHorse**", README)
-        self.assertIn("HXIPresence-v0.4.2.zip", README)
+        self.assertIn("HXIPresence-v0.4.3.zip", README)
+
+    def test_full_session_timer_survives_zoning_but_resets_on_logout(self):
+        self.assertIn("return nil, login_status", MAIN_SOURCE)
+        self.assertIn("local snapshot, login_status = read_player_snapshot()", MAIN_SOURCE)
+        self.assertIn("update_login_state(snapshot, login_status)", MAIN_SOURCE)
+        self.assertRegex(
+            MAIN_SOURCE,
+            r"(?s)if runtime\.session_started_at == nil then\s+"
+            r"runtime\.session_started_at = os\.time\(\);\s+end",
+        )
+        self.assertIn(
+            "if login_status ~= 0 then\n        return;\n    end",
+            MAIN_SOURCE,
+        )
+        self.assertRegex(
+            MAIN_SOURCE,
+            r"(?s)if login_status ~= 0 then\s+return;\s+end\s+"
+            r"runtime\.session_started_at = nil;.*?discord_ipc\.clear_activity\(\);",
+        )
 
     def test_readme_requires_no_user_discord_application_setup(self):
         self.assertIn("No Discord Developer Portal setup is required", README)
