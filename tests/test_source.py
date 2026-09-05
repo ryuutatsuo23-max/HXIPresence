@@ -162,10 +162,26 @@ class HXIPresenceSourceTests(unittest.TestCase):
         self.assertIn("Repository / support##HXIPresenceSupport", MAIN_SOURCE)
         self.assertIn("Support and feature requests", README)
 
+    def test_character_settings_are_restored_after_login(self):
+        self.assertIn(
+            "settings.register('settings', 'HXIPresence_SettingsUpdate', "
+            "apply_updated_settings)",
+            MAIN_SOURCE,
+        )
+        self.assertRegex(
+            MAIN_SOURCE,
+            r"(?s)local function apply_updated_settings\(updated\).*?"
+            r"runtime\.settings = updated;.*?"
+            r"runtime\.last_connect_attempt_at = -reconnect_interval_seconds;",
+        )
+        self.assertIn("Saved settings restored", MAIN_SOURCE)
+        self.assertIn("saved per character", README)
+        self.assertIn("still starts disabled", README)
+
     def test_public_metadata_credits_dragohorse(self):
         self.assertIn("addon.author = 'DragoHorse'", MAIN_SOURCE)
         self.assertIn("Created by **DragoHorse**", README)
-        self.assertIn("HXIPresence-v0.4.3.zip", README)
+        self.assertIn("HXIPresence-v0.4.4.zip", README)
 
     def test_full_session_timer_survives_zoning_but_resets_on_logout(self):
         self.assertIn("return nil, login_status", MAIN_SOURCE)

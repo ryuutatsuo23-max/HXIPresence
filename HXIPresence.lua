@@ -2,7 +2,7 @@ local support_url = 'https://github.com/ryuutatsuo23-max/HXIPresence';
 
 addon.name = 'HXIPresence';
 addon.author = 'DragoHorse';
-addon.version = '0.4.3';
+addon.version = '0.4.4';
 addon.desc = 'Privacy-controlled Discord Rich Presence for HorizonXI.';
 addon.link = support_url;
 
@@ -170,6 +170,24 @@ local function clear_and_disconnect()
     runtime.pending_publish_nonce = nil;
     runtime.pending_publish_sent_at = nil;
 end
+
+local function apply_updated_settings(updated)
+    if updated == nil then
+        return;
+    end
+
+    runtime.settings = updated;
+    mark_for_refresh();
+    runtime.last_connect_attempt_at = -reconnect_interval_seconds;
+    if runtime.settings.enabled == true then
+        settings_ui.feedback = 'Saved settings restored; waiting for the local Discord client.';
+    else
+        clear_and_disconnect();
+        settings_ui.feedback = 'Presence is disabled for this character.';
+    end
+end
+
+settings.register('settings', 'HXIPresence_SettingsUpdate', apply_updated_settings);
 
 local function ensure_connected(now)
     if discord_ipc.is_connected() then

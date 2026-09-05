@@ -48,7 +48,7 @@ need to create an application, bot, token, or webhook.
 
 ## Installation
 
-1. Download `HXIPresence-v0.4.3.zip` from the
+1. Download `HXIPresence-v0.4.4.zip` from the
    [latest release](https://github.com/ryuutatsuo23-max/HXIPresence/releases/latest).
 2. Extract the included `HXIPresence` folder into Ashita's `addons` folder.
 3. Confirm the resulting path is `addons\HXIPresence\HXIPresence.lua`.
@@ -78,6 +78,10 @@ Discord uses two activity lines below the game title:
 
 Updates may take up to 15 seconds. Disabling or unloading HXIPresence clears the
 activity it published.
+
+The enabled state and optional detail choices are saved per character and
+restored automatically after login. A character profile that has not enabled
+HXIPresence before still starts disabled.
 
 ## Privacy
 
